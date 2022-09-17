@@ -2,7 +2,7 @@
   TO DO:
   * get automated calling
   * integrate robot js
-  * separate robotjs from index.html
+  * separate robotjs from index.html (use browserify or try nut.js)
  -->
 
 <!DOCTYPE html>
@@ -28,6 +28,7 @@
     />
     <link rel="stylesheet" href="./style.css" />
     <script src="https://unpkg.com/peerjs@1.3.2/dist/peerjs.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/robot-js@2.0.0/lib/robot.min.js"></script> -->
   </head>
 
   <body>
@@ -44,37 +45,20 @@
       <div class="remote-video-container" id="remoteVideoContainer">
         <video src="" id="remoteVideo" width="800px" autoplay></video>
       </div>
-      <div class="local-video-container" id="localVideoContainer">
-        <div class="local-video-controls">
-          <button id="screenShareBtn">Share Screen</button>
-          <button id="hideVideo">
-            <img src="./media//toggle-switch-round.svg" alt="" />
-          </button>
-        </div>
-        <video
-          src=""
-          id="localVideo"
-          width="100%"
-          autoplay
-          muted="muted"
-        ></video>
-      </div>
     </div>
   </body>
 
   <script type="module">
     // import { screenShare } from "./screenShare.js";
-    import sineWave from "./controller/controller.js";
 
-    var peer = new Peer(null, {
+    var peerId = "Mac-Mini-440";
+    var peer = new Peer(peerId, {
       debug: 2,
     });
     var remoteId = "";
     var conn = null;
     var peerCall;
     var remoteVideo = document.getElementById("remoteVideo");
-    var localVideoContainer = document.getElementById("localVideoContainer");
-    var localVideo = document.getElementById("localVideo");
     var remoteVideoContainer = document.getElementById("remoteVideoContainer");
     remoteVideoContainer.style.display = "none";
     var shareLink = document.getElementById("shareLink");
@@ -98,17 +82,15 @@
     }
 
     // Initialize peer
-    peer.on("open", function (localId) {
-      console.log("Local ID is: " + localId);
+    peer.on("open", function () {
+      console.log("Local ID is: " + peerId);
       navigator.mediaDevices
         .getUserMedia({ video: true, audio: true })
-        .then(function (stream) {
-          localVideo.srcObject = stream;
-        });
-      document.getElementById("connectionId").innerHTML = localId;
+        .then(function (stream) {});
+      document.getElementById("connectionId").innerHTML = peerId;
       // create share link if no id is found in the url
-      hasQueryId ? startByQuery() : createShareableLink(localId); // ternary operator
-      return localId;
+      hasQueryId ? startByQuery() : createShareableLink(peerId); // ternary operator
+      return peerId;
     });
 
     const createShareableLink = (localId) => {
@@ -138,30 +120,11 @@
       openConnection();
     };
 
-    // Local video controls
-    // ====================
-
-    const toggleVideo = () => {
-      if (!localVideo.classList.contains("hide-video")) {
-        // if video is currently visible...
-        localVideo.classList.add("hide-video");
-        console.log("none");
-      } else {
-        localVideo.classList.remove("hide-video");
-        console.log("block");
-      }
-    };
-
-    localVideo.style.display = "block";
-    document.getElementById("hideVideo").addEventListener("click", toggleVideo);
-
     async function screenShare(displayMediaOptions) {
       try {
         let screenShareStream = await navigator.mediaDevices.getDisplayMedia(
           displayMediaOptions
         );
-        localVideo.srcObject = screenShareStream;
-        localVideo.classList.add("flip-horizontal");
 
         // replace the other person's stream with your screen share
         peerCall.peerConnection
@@ -178,28 +141,24 @@
       }
     }
 
-    document
-      .getElementById("screenShareBtn")
-      .addEventListener("click", screenShare);
+    // localVideo.onended = function () {
+    //   console.log("Screen share ended");
+    //   navigator.mediaDevices
+    //     .getUserMedia({ video: true, audio: true })
+    //     .then(function (stream) {
+    //       localVideo.srcObject = stream;
+    //       localVideo.classList.remove("flip-horizontal");
 
-    localVideo.onended = function () {
-      console.log("Screen share ended");
-      navigator.mediaDevices
-        .getUserMedia({ video: true, audio: true })
-        .then(function (stream) {
-          localVideo.srcObject = stream;
-          localVideo.classList.remove("flip-horizontal");
+    //       // on screen share end, change from sending screen share stream to local stream
+    //       peerCall.peerConnection
+    //         .getSenders()[1]
+    //         .replaceTrack(stream.getVideoTracks()[0]);
 
-          // on screen share end, change from sending screen share stream to local stream
-          peerCall.peerConnection
-            .getSenders()[1]
-            .replaceTrack(stream.getVideoTracks()[0]);
-
-          peerCall.peerConnection
-            .getSenders()[0]
-            .replaceTrack(stream.getAudioTracks()[0]);
-        });
-    };
+    //       peerCall.peerConnection
+    //         .getSenders()[0]
+    //         .replaceTrack(stream.getAudioTracks()[0]);
+    //     });
+    // };
 
     // Open a new data connection
     const openConnection = () => {
@@ -241,7 +200,6 @@
             document.getElementById("connectionContainer").style.display =
               "none";
             remoteVideoContainer.style.display = "block";
-            localVideoContainer.classList.add("video-modal");
             remoteVideo.srcObject = remoteStream;
             peerCall = call; // export to a global variable
           });
@@ -259,7 +217,6 @@
         .then(function (stream) {
           document.getElementById("connectionContainer").style.display = "none";
           remoteVideoContainer.style.display = "block";
-          localVideoContainer.classList.add("video-modal");
           call.answer(stream); // Answer the call with an A/V stream.
           call.on("stream", function (remoteStream) {
             remoteVideo.srcObject = remoteStream;

@@ -140,49 +140,6 @@ body {
   height: 100%;
 }
 
-.local-video-container {
-  transition: all 0.5s;
-  z-index: 100;
-  position: relative;
-  width: 400px;
-}
-
-.video-modal {
-  position: absolute;
-  top: 66%;
-  right: 2%;
-}
-
-.local-video-controls {
-  position: absolute;
-  top: 10px;
-  right: 0;
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-#localVideo {
-  border-radius: 10px;
-  overflow: hidden;
-  transform: scale(-1, 1); /* flip video horizontally */
-}
-
-.flip-horizontal {
-  transform: scale(1, 1) !important; /* reverse video flip */
-}
-
-.hide-video {
-  display: "none";
-  visibility: hidden;
-}
-
-#hideVideo img {
-  max-width: 60px;
-  opacity: 70%;
-}
-
 #screenShareBtn {
   padding: 8px 14px;
   border-radius: 5px;
