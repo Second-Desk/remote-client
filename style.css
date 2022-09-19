@@ -139,12 +139,6 @@ body {
   height: 100%;
 }
 
-#screenShareBtn {
-  padding: 8px 14px;
-  border-radius: 5px;
-  background-color: #cc343b;
-}
-
 button {
   background: none;
   border: none;
@@ -154,17 +148,16 @@ button {
   font-size: 0.8rem;
 }
 
-#copyShareLinkBtn {
+#screenShareBtn {
   border: var(--clickable) solid 2px;
   cursor: pointer;
-  margin-top: auto;
   transition: background-color 0.15s ease-out;
   background-color: #ffffff00;
-  margin-top: 25%;
+  margin-top: 15%;
   min-width: 40%;
 }
 
-#copyShareLinkBtn:hover {
+#screenShareBtn:hover {
   background-color: #ffffff10;
 }
 

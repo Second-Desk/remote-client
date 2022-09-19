@@ -1,8 +1,10 @@
 <!-- 
   TO DO:
-  * get automated calling
+  * add screen share feed
+  * use electron-packager to make native execs
   * integrate robot js
   * add an app icon ;)
+  * add more try catch blocks
  -->
 
 <!DOCTYPE html>
@@ -28,10 +30,6 @@
         <h4>
           Connection ID: <br /><span id="connectionId">being retrieved...</span>
         </h4>
-
-        <button id="copyShareLinkBtn">
-          <p id="copyShareLinkBtnText">Copy Link</p>
-        </button>
       </div>
       <div class="remote-video-container" id="remoteVideoContainer">
         <video src="" id="remoteVideo" width="800px" autoplay></video>
@@ -39,5 +37,6 @@
     </div>
 
     <script src="connection.js" type="module"></script>
+    <script src="preload.js" type="module"></script>
   </body>
 </html>
