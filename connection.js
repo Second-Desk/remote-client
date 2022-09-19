@@ -1,5 +1,5 @@
 const { Peer } = require("peerjs");
-const { mouse, Point, keyboard, Key } = require("@nut-tree/nut-js");
+const { mouse, Point, Button, keyboard, Key } = require("@nut-tree/nut-js");
 
 var peerId = "Mac-Mini-440";
 var peer = new Peer(peerId, {
@@ -37,28 +37,23 @@ peer.on("connection", function (conn) {
 
 // Data handler for remote actions
 const remoteController = (data) => {
-  if (data.name != null) {
-    switch (data.name) {
-      case "mousePosition":
-        async () => {
-          const target = new Point(data.mouseX, data.mouseY);
-          await mouse.setPosition(target);
-        };
-        break;
-      case "mouseAction":
-        async () => {
-          await mouse.click(Button.LEFT);
-        };
-        break;
-      case "keyboardAction":
-        async () => {
-          console.log(data.key);
-          await keyboard.pressKey(Key.data.key);
-          await keyboard.releaseKey(Key.data.key);
-        };
-        break;
-      default:
-    }
+  switch (data.name) {
+    case "mousePosition":
+      // console.log(data);
+      const target = new Point(data.mouseX, data.mouseY);
+      mouse.setPosition(target);
+      break;
+    case "mouseAction":
+      console.log(data);
+      mouse.click(Button.LEFT);
+      break;
+    case "keyboardAction":
+      console.log(data);
+      let keypress = data.key;
+      console.log(keypress);
+      keyboard.type(keypress); // should switch to keycode
+      break;
+    default:
   }
 };
 
