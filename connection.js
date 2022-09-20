@@ -1,7 +1,7 @@
 const { Peer } = require("peerjs");
 const { mouse, Point, Button, keyboard, Key } = require("@nut-tree/nut-js");
 
-var peerId = "Mac-Mini-440";
+var peerId = "SD-Remote-Desktop-440";
 var peer = new Peer(peerId, {
   debug: 2,
 });
