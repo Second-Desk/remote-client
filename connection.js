@@ -1,6 +1,9 @@
 const { Peer } = require("peerjs");
 const { mouse, Point, Button, keyboard, Key } = require("@nut-tree/nut-js");
 
+mouse.config.autoDelayMs = 0;
+keyboard.config.autoDelayMs = 0;
+
 var peerId = "SD-Remote-Desktop-440";
 var peer = new Peer(peerId, {
   debug: 2,
@@ -45,7 +48,11 @@ const remoteController = (data) => {
       break;
     case "mouseAction":
       console.log(data);
-      mouse.click(Button.LEFT);
+      if (data.action == "mouseDown") {
+        mouse.pressButton(Button.LEFT);
+      } else {
+        mouse.releaseButton(Button.LEFT);
+      }
       break;
     case "keyboardAction":
       console.log(data);
