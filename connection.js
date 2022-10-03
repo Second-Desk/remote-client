@@ -49,9 +49,12 @@ const remoteController = (data) => {
       break;
     case "keyboardAction":
       console.log(data);
-      let keypress = data.key;
-      console.log(keypress);
-      keyboard.type(keypress); // should switch to keycode
+      let remoteKeyboardInput = data.keyInput;
+      if (remoteKeyboardInput.includes("Key")) {
+        remoteKeyboardInput = remoteKeyboardInput.replace("Key", "");
+      }
+      console.log(remoteKeyboardInput);
+      keyboard.type(Key[remoteKeyboardInput]);
       break;
     default:
   }
