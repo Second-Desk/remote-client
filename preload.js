@@ -11,8 +11,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
 const { ipcRenderer } = require("electron");
 
-var screenStream;
-
 ipcRenderer.on("SET_SOURCE", async (event, sourceId) => {
   try {
     stream = await navigator.mediaDevices.getUserMedia({
@@ -28,22 +26,14 @@ ipcRenderer.on("SET_SOURCE", async (event, sourceId) => {
         },
       },
     });
-    screenStream = stream;
-    console.log(screenStream);
-    handleStream(stream);
+    setStream(stream);
   } catch (e) {
-    handleError(e);
+    console.log(e);
   }
 });
 
-module.exports = screenStream;
-
-function handleStream(screenStream) {
+function setStream(screenStream) {
   const video = document.getElementById("remoteVideo");
   video.srcObject = screenStream;
   video.onloadedmetadata = (e) => video.play();
-}
-
-function handleError(e) {
-  console.log(e);
 }

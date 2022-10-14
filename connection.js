@@ -1,6 +1,14 @@
 const { Peer } = require("peerjs");
 const { mouse, Point, Button, keyboard, Key } = require("@nut-tree/nut-js");
 
+let screenHeight;
+let screenWidth;
+require("electron").ipcRenderer.on("ping", (event, message) => {
+  console.log(message); // Prints screen size
+  screenHeight = message.height;
+  screenWidth = message.width;
+});
+
 mouse.config.autoDelayMs = 0;
 keyboard.config.autoDelayMs = 0;
 
@@ -11,6 +19,7 @@ var peer = new Peer(peerId, {
 var remoteId = "";
 var conn = null;
 var peerCall;
+var localScreenSize = null;
 var remoteVideo = document.getElementById("remoteVideo");
 var remoteVideoContainer = document.getElementById("remoteVideoContainer");
 remoteVideoContainer.style.display = "none";
@@ -42,9 +51,16 @@ peer.on("connection", function (conn) {
 const remoteController = (data) => {
   switch (data.name) {
     case "mousePosition":
-      // console.log(data);
-      const target = new Point(data.mouseX, data.mouseY);
+      let mouseXOffset = data.width;
+      let mouseYOffset = data.height;
+      let mouseXScaleFactor = screenWidth / mouseXOffset;
+      let mouseYScaleFactor = (screenHeight + 110) / mouseYOffset;
+      const target = new Point(
+        data.mouseX * mouseXScaleFactor,
+        data.mouseY * mouseYScaleFactor
+      );
       mouse.setPosition(target);
+      console.log("New Y pos: " + data.mouseY * mouseYScaleFactor);
       break;
     case "mouseAction":
       console.log(data);

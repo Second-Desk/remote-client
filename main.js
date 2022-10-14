@@ -4,6 +4,7 @@ const { app, BrowserWindow, desktopCapturer } = require("electron");
 const path = require("path");
 const electronReload = require("electron-reload");
 
+// create app window
 const createWindow = () => {
   const win = new BrowserWindow({
     width: 1000,
@@ -20,13 +21,19 @@ const createWindow = () => {
     .getSources({ types: ["window", "screen"] })
     .then(async (sources) => {
       for (const source of sources) {
+        console.log(sources);
         if (source.name === "Entire screen") {
-          // console.log(source);
           win.webContents.send("SET_SOURCE", source.id);
           return;
         }
       }
     });
+
+  // get dimensions of screen and send to preload.js
+  const { screen } = require("electron");
+  const primaryDisplay = screen.getPrimaryDisplay();
+  const { width, height } = primaryDisplay.workAreaSize;
+  win.webContents.send("ping", primaryDisplay.workAreaSize);
 
   win.webContents.openDevTools();
 
