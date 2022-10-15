@@ -39,6 +39,11 @@ peer.on("open", function () {
   return peerId;
 });
 
+// destroy connection when a user disconnects
+peer.on("close", function() {
+  peer.destroy();
+})
+
 // Receive messages
 peer.on("connection", function (conn) {
   conn.on("data", function (data) {
@@ -95,9 +100,6 @@ peer.on("call", function (call) {
       var videoStream = remoteVideo.captureStream(30);
       console.log("My stream: " + videoStream);
       call.answer(videoStream); // Answer the call with an A/V stream.
-      call.on("stream", function (remoteStream) {
-        remoteVideo.srcObject = remoteStream;
-      });
     })
     .catch(function (err) {
       console.log("ERROR: " + err);
