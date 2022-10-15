@@ -22,7 +22,9 @@ const createWindow = () => {
     .then(async (sources) => {
       for (const source of sources) {
         if (source.name === "Entire screen") {
-          win.webContents.send("SET_SOURCE", source.id);
+          const { screen } = require("electron");
+          const primaryDisplay = screen.getPrimaryDisplay();
+          win.webContents.send("SET_SOURCE", source.id, primaryDisplay.size);
           return;
         }
       }
@@ -31,7 +33,8 @@ const createWindow = () => {
   // get dimensions of screen and send to preload.js
   const { screen } = require("electron");
   const primaryDisplay = screen.getPrimaryDisplay();
-  win.webContents.send("ping", primaryDisplay.size);
+  win.webContents.send("GET_SCREEN_SIZE", primaryDisplay.size);
+
 
   win.webContents.openDevTools();
 

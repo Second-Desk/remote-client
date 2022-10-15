@@ -1,13 +1,7 @@
 const { Peer } = require("peerjs");
 const { mouse, Point, Button, keyboard, Key } = require("@nut-tree/nut-js");
+const { ipcRenderer } = require("electron");
 
-let screenHeight;
-let screenWidth;
-require("electron").ipcRenderer.on("ping", (event, message) => {
-  console.log(message); // Prints screen size
-  screenHeight = message.height;
-  screenWidth = message.width;
-});
 
 mouse.config.autoDelayMs = 0;
 keyboard.config.autoDelayMs = 0;
@@ -26,6 +20,45 @@ remoteVideoContainer.style.display = "none";
 var startCallBtn = document.getElementById("startCallBtn");
 document.getElementById("connectionContainer").style.display = "none";
 remoteVideoContainer.style.display = "block";
+
+let screenHeight;
+let screenWidth;
+// listen for screen size from main.js
+ipcRenderer.on("GET_SCREEN_SIZE", (event, message) => {
+  screenHeight = message.height;
+  screenWidth = message.width;
+});
+
+// listen for desktop capturer from main.js
+ipcRenderer.on("SET_SOURCE", async (event, sourceId) => {
+  try {
+    let stream = await navigator.mediaDevices.getUserMedia({
+      audio: false,
+      video: {
+        mandatory: {
+          chromeMediaSource: "desktop",
+          chromeMediaSourceId: sourceId,
+          minWidth: 1920,
+          maxWidth: 1920,
+          minHeight: 1080,
+          maxHeight: 1080,
+        },
+      },
+    });
+    setStream(stream);
+  } catch (e) {
+    console.log(e);
+  }
+});
+
+let localStream;
+const setStream = (screenStream) => {
+  console.log(screenStream);
+  const video = document.getElementById("remoteVideo");
+  video.srcObject = screenStream;
+  video.onloadedmetadata = (e) => video.play();
+  localStream = screenStream;
+}
 
 // Initialize peer
 peer.on("open", function () {
@@ -90,11 +123,8 @@ peer.on("call", function (call) {
   navigator.mediaDevices
     .getUserMedia({ video: true, audio: false })
     .then(function (stream) {
-      document.getElementById("connectionContainer").style.display = "none";
       remoteVideoContainer.style.display = "block";
-      var videoStream = remoteVideo.captureStream(30);
-      console.log("My stream: " + videoStream);
-      call.answer(videoStream); // Answer the call with an A/V stream.
+      call.answer(localStream); // Answer the call with an A/V stream.
     })
     .catch(function (err) {
       console.log("ERROR: " + err);
