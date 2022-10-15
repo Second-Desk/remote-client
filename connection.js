@@ -54,7 +54,7 @@ const remoteController = (data) => {
       let mouseXOffset = data.width;
       let mouseYOffset = data.height;
       let mouseXScaleFactor = screenWidth / mouseXOffset;
-      let mouseYScaleFactor = (screenHeight + 110) / mouseYOffset;
+      let mouseYScaleFactor = screenHeight / mouseYOffset;
       const target = new Point(
         data.mouseX * mouseXScaleFactor,
         data.mouseY * mouseYScaleFactor

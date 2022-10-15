@@ -21,7 +21,6 @@ const createWindow = () => {
     .getSources({ types: ["window", "screen"] })
     .then(async (sources) => {
       for (const source of sources) {
-        console.log(sources);
         if (source.name === "Entire screen") {
           win.webContents.send("SET_SOURCE", source.id);
           return;
@@ -32,8 +31,7 @@ const createWindow = () => {
   // get dimensions of screen and send to preload.js
   const { screen } = require("electron");
   const primaryDisplay = screen.getPrimaryDisplay();
-  const { width, height } = primaryDisplay.workAreaSize;
-  win.webContents.send("ping", primaryDisplay.workAreaSize);
+  win.webContents.send("ping", primaryDisplay.size);
 
   win.webContents.openDevTools();
 
