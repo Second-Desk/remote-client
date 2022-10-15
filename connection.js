@@ -39,11 +39,6 @@ peer.on("open", function () {
   return peerId;
 });
 
-// destroy connection when a user disconnects
-peer.on("close", function() {
-  peer.destroy();
-})
-
 // Receive messages
 peer.on("connection", function (conn) {
   conn.on("data", function (data) {
