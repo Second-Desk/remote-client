@@ -2,11 +2,10 @@ const { Peer } = require("peerjs");
 const { mouse, Point, Button, keyboard, Key } = require("@nut-tree/nut-js");
 const { ipcRenderer } = require("electron");
 
-
 mouse.config.autoDelayMs = 0;
 keyboard.config.autoDelayMs = 0;
 
-var peerId = "SD-Remote-Desktop-440";
+var peerId = "SD-RD-440";
 var peer = new Peer(peerId, {
   debug: 2,
 });
@@ -58,7 +57,7 @@ const setStream = (screenStream) => {
   video.srcObject = screenStream;
   video.onloadedmetadata = (e) => video.play();
   localStream = screenStream;
-}
+};
 
 // Initialize peer
 peer.on("open", function () {
