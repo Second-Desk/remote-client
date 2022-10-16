@@ -7,6 +7,9 @@ keyboard.config.autoDelayMs = 0;
 
 var peerId = "SD-RD-440";
 var peer = new Peer(peerId, {
+  host: "peerjs-365715.uc.r.appspot.com",
+  secure: true,
+  port: 443,
   debug: 2,
 });
 var remoteId = "";
