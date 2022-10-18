@@ -27,6 +27,7 @@ let screenHeight;
 let screenWidth;
 // listen for screen size from main.js
 ipcRenderer.on("GET_SCREEN_SIZE", (event, screenSize) => {
+  console.log(screenSize.width + " x " + screenSize.height);
   screenHeight = screenSize.height;
   screenWidth = screenSize.width;
 });
