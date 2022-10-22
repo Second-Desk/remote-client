@@ -8,7 +8,7 @@ keyboard.config.autoDelayMs = 0;
 var peerId = "SD-RD-440";
 var peer = new Peer(peerId, {
   host: "peerjs-env.eba-xwhvfsep.us-east-2.elasticbeanstalk.com",
-  secure: true,
+  // secure: true,
   port: 443,
   debug: 2,
 });
