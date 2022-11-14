@@ -9,7 +9,7 @@ var peerId = "SD-RD-440";
 var peer = new Peer(peerId, {
   host: "peer.2nddesk.app",
   secure: true,
-  port: 5000,
+  port: 443,
   debug: 2,
 });
 var remoteId = "";
