@@ -69,7 +69,6 @@
     "pump": "^3.0.0",
     "responselike": "^1.0.2",
     "roarr": "^2.15.4",
-    "robotjs": "^0.6.0",
     "semver": "^6.3.0",
     "semver-compare": "^1.0.0",
     "serialize-error": "^7.0.1",
@@ -81,7 +80,6 @@
     "type-fest": "^0.13.1",
     "universalify": "^0.1.2",
     "url-parse-lax": "^3.0.0",
-    "uuid": "^9.0.0",
     "wrappy": "^1.0.2",
     "yallist": "^4.0.0",
     "yauzl": "^2.10.0"
