@@ -7,7 +7,7 @@ keyboard.config.autoDelayMs = 0;
 
 var peerId = "SD-RD-440";
 var peer = new Peer(peerId, {
-  host: "server.peer.2nddesk.app",
+  host: "https://server.peer.2nddesk.app",
   secure: true,
   port: 443,
   debug: 2,
