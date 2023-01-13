@@ -67,11 +67,10 @@ const setStream = (screenStream) => {
 peer.on("open", function () {
   console.log("Local ID is: " + peerId);
   document.getElementById("connectionId").innerHTML = peerId;
-  navigator.mediaDevices
-    .getUserMedia({ video: true, audio: false })
-    .then(function (stream) {
-      // remoteVideo.srcObject = stream;
-    });
+  // navigator.mediaDevices
+  //   .getUserMedia({ video: false, audio: false })
+  //   .then(function (stream) {
+  //   });
   return peerId;
 });
 
@@ -123,14 +122,16 @@ const remoteController = (data) => {
 peer.on("call", function (call) {
   console.log("Call successful!");
   // Answer the call, providing our mediaStream
-  navigator.mediaDevices
-    .getUserMedia({ video: true, audio: false })
-    .then(function (stream) {
-      remoteVideoContainer.style.display = "block";
+  // navigator.mediaDevices
+  //   .getUserMedia({ video: true, audio: false })
+  //   .then(function (stream) {
+  //     remoteVideoContainer.style.display = "block";
+  //     call.answer(localStream); // Answer the call with an A/V stream.
+  //   })
+  //   .catch(function (err) {
+  //     console.log("ERROR: " + err);
+  //   });
+    remoteVideoContainer.style.display = "block";
       call.answer(localStream); // Answer the call with an A/V stream.
-    })
-    .catch(function (err) {
-      console.log("ERROR: " + err);
-    });
   peerCall = call; // export to a global variable
 });
